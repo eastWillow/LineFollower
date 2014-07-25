@@ -8,6 +8,7 @@
 CNY70 > 3F =>BLACK
 */
 unsigned char ch = 0;
+unsigned char cny70 = 0x00;
 void setup();
 void serialInit(void);
 void serialSendHex(unsigned char);
@@ -25,8 +26,12 @@ void setup(){
 }
 void AnalogISR(void) interrupt 5 using 1{
 	ADC_CONTR &= ~ADC_FLAG;
-	serialSendHex(ADC_RES);
-	//Delay500ms();
+	if(ADC_RES >= 0xE0) cny70 |= (0x01 << ch);
+	if(ADC_RES <= 0x0f) cny70 &= _crol_(0xfe,ch);
+	if(++ch>7){
+		ch = 0;
+		serialSendHex(cny70);
+	}
 	ADC_CONTR = ADC_POWER|ADC_HHSPEED|ADC_START|ch;
 }
 void serialInit(void)		//9600bps@12.000MHz
