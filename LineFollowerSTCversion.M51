@@ -1,0 +1,170 @@
+BL51 BANKED LINKER/LOCATER V6.22                                                        07/25/2014  15:32:15  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
+C:\KEIL\C51\BIN\BL51.EXE LineFollowerSTCVersion.obj TO LineFollowerSTCversion RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  LineFollowerSTCVersion.obj (LINEFOLLOWERSTCVERSION)
+  C:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+  C:\KEIL\C51\LIB\C51S.LIB (?C_INIT)
+
+
+LINK MAP OF MODULE:  LineFollowerSTCversion (LINEFOLLOWERSTCVERSION)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            REG     0008H     0008H     ABSOLUTE     "REG BANK 1"
+            DATA    0010H     0001H     UNIT         ?DT?LINEFOLLOWERSTCVERSION
+            IDATA   0011H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+                    0003H     0028H                  *** GAP ***
+            CODE    002BH     0003H     ABSOLUTE     
+                    002EH     07D2H                  *** GAP ***
+            CODE    0800H     008CH     UNIT         ?C_C51STARTUP
+            CODE    088CH     0026H     UNIT         ?PR?ANALOGISR?LINEFOLLOWERSTCVERSION
+            CODE    08B2H     0015H     UNIT         ?PR?SETUP?LINEFOLLOWERSTCVERSION
+            CODE    08C7H     0013H     UNIT         ?PR?SERIALINIT?LINEFOLLOWERSTCVERSION
+            CODE    08DAH     000FH     UNIT         ?PR?DELAY500MS?LINEFOLLOWERSTCVERSION
+            CODE    08E9H     0008H     UNIT         ?PR?MAIN?LINEFOLLOWERSTCVERSION
+            CODE    08F1H     0008H     UNIT         ?PR?_SERIALSENDHEX?LINEFOLLOWERSTCVERSION
+            CODE    08F9H     0004H     UNIT         ?C_INITSEG
+
+
+
+OVERLAY MAP OF MODULE:   LineFollowerSTCversion (LINEFOLLOWERSTCVERSION)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?PR?ANALOGISR?LINEFOLLOWERSTCVERSION
+  +--> ?PR?_SERIALSENDHEX?LINEFOLLOWERSTCVER...
+
+*** NEW ROOT ***************************************************
+
+?C_C51STARTUP
+  +--> ?PR?MAIN?LINEFOLLOWERSTCVERSION
+  +--> ?C_INITSEG
+
+?PR?MAIN?LINEFOLLOWERSTCVERSION
+  +--> ?PR?SETUP?LINEFOLLOWERSTCVERSION
+BL51 BANKED LINKER/LOCATER V6.22                                                      07/25/2014  15:32:15  PAGE 2
+
+
+  +--> ?PR?SERIALINIT?LINEFOLLOWERSTCVERSION
+
+
+
+SYMBOL TABLE OF MODULE:  LineFollowerSTCversion (LINEFOLLOWERSTCVERSION)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        LINEFOLLOWERSTCVERSION
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:00A8H         PUBLIC        IE
+  D:00BDH         PUBLIC        ADC_RES
+  D:00B8H         PUBLIC        IP
+  C:08C7H         PUBLIC        serialInit
+  B:0098H.1       PUBLIC        TI
+  D:00D8H         PUBLIC        CCON
+  C:08E9H         PUBLIC        main
+  D:00BCH         PUBLIC        ADC_CONTR
+  D:0099H         PUBLIC        SBUF
+  D:0087H         PUBLIC        PCON
+  C:08B2H         PUBLIC        setup
+  D:0098H         PUBLIC        SCON
+  D:0088H         PUBLIC        TCON
+  C:08F1H         PUBLIC        _serialSendHex
+  D:008EH         PUBLIC        AUXR
+  C:088CH         PUBLIC        AnalogISR
+  D:0010H         PUBLIC        ch
+  D:009DH         PUBLIC        P1ASF
+  D:009CH         PUBLIC        BRT
+  C:08DAH         PUBLIC        Delay500ms
+  D:00D0H         PUBLIC        PSW
+  -------         PROC          MAIN
+  C:08E9H         LINE#         15
+  C:08E9H         LINE#         16
+  C:08ECH         LINE#         17
+  C:08EFH         LINE#         18
+  -------         ENDPROC       MAIN
+  -------         PROC          SETUP
+  C:08B2H         LINE#         20
+  C:08B2H         LINE#         21
+  C:08B5H         LINE#         22
+  C:08B8H         LINE#         23
+  C:08BBH         LINE#         24
+  C:08C6H         LINE#         25
+  -------         ENDPROC       SETUP
+  -------         PROC          ANALOGISR
+  C:088CH         LINE#         26
+  C:0899H         LINE#         27
+  C:089CH         LINE#         28
+  C:08A1H         LINE#         30
+  C:08A7H         LINE#         31
+  -------         ENDPROC       ANALOGISR
+  -------         PROC          SERIALINIT
+  C:08C7H         LINE#         32
+  C:08C7H         LINE#         33
+  C:08C7H         LINE#         34
+BL51 BANKED LINKER/LOCATER V6.22                                                      07/25/2014  15:32:15  PAGE 3
+
+
+  C:08CAH         LINE#         35
+  C:08CDH         LINE#         36
+  C:08D0H         LINE#         37
+  C:08D3H         LINE#         38
+  C:08D6H         LINE#         39
+  C:08D9H         LINE#         40
+  -------         ENDPROC       SERIALINIT
+  -------         PROC          _SERIALSENDHEX
+  D:0007H         SYMBOL        Data
+  C:08F1H         LINE#         41
+  C:08F1H         LINE#         42
+  C:08F3H         LINE#         43
+  C:08F6H         LINE#         44
+  C:08F8H         LINE#         45
+  -------         ENDPROC       _SERIALSENDHEX
+  -------         PROC          DELAY500MS
+  -------         DO            
+  D:0007H         SYMBOL        i
+  D:0006H         SYMBOL        j
+  D:0005H         SYMBOL        k
+  -------         ENDDO         
+  C:08DAH         LINE#         46
+  C:08DAH         LINE#         47
+  C:08DAH         LINE#         50
+  C:08DBH         LINE#         51
+  C:08DCH         LINE#         52
+  C:08DEH         LINE#         53
+  C:08E0H         LINE#         54
+  C:08E2H         LINE#         56
+  C:08E2H         LINE#         58
+  C:08E2H         LINE#         59
+  C:08E4H         LINE#         60
+  C:08E6H         LINE#         61
+  C:08E8H         LINE#         62
+  -------         ENDPROC       DELAY500MS
+  -------         ENDMOD        LINEFOLLOWERSTCVERSION
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?DELAY500MS?LINEFOLLOWERSTCVERSION
+
+******************************************************************************
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 0073H BYTE ( 5%) *
+******************************************************************************
+
+Program Size: data=18.0 xdata=0 code=259
+LINK/LOCATE RUN COMPLETE.  1 WARNING(S),  0 ERROR(S)
