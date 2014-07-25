@@ -6,10 +6,10 @@
 #define ADC_HHSPEED 0x60
 #define FULL 65535
 #define ALL_WIDTH 20000 //20ms
-sbit SERVOMOTOR1=P0^0;
+sbit SERVOMOTOR1=P2^2;
 sbit LIMITSWITCH=P3^2; // INT0
-sbit IN1=P0^1;
-sbit IN2=P0^2;
+sbit IN1=P2^0;
+sbit IN2=P2^1;
 //Low Trigger
 sbit CNY70_0=P1^0; //cny70.0
 sbit CNY70_1=P1^1; //cny70.1
@@ -27,7 +27,6 @@ IN1 IN2 OUT1 OUT2
  1   0    H    L forward
  0   0    Z    Z nothing
 */
-bit ServoMotor;
 volatile unsigned char ch = 0;
 volatile unsigned char cny70 = 0xff;
 volatile unsigned int data servoMotorHighTime = 1250;//volatile
