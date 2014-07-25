@@ -1,0 +1,5 @@
+org 0x00
+JMP main
+org 0x100
+main:
+	mov SP,#0x80

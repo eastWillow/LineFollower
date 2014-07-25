@@ -31,23 +31,22 @@ volatile unsigned char ch = 0;
 volatile unsigned char cny70 = 0xff;
 volatile unsigned int data servoMotorHighTime = 1250;//volatile
 void setup();
-void serialInit(void);
-void serialSendHex(unsigned char);
 void Delay500ms();
+void UartInit();
 void main(){
 	setup();
-	//serialInit();
+	UartInit();
 	while(1){
-		//if(((~cny70)&0x02) == 0x02) servoMotorHighTime =1100;
-		//if(((~cny70)&0x08) == 0x08) servoMotorHighTime =1400;
+		ADC_CONTR = ADC_POWER|ADC_HHSPEED|ADC_START|ch;
 	}
 }
 void setup(){
 	IE = 0xa3;
-	//PX1 = 1;
-	//P1ASF = 0x1F;
-	//ADC_CONTR = ADC_POWER|ADC_HHSPEED|ch;
-	//_nop_();_nop_();_nop_();_nop_();_nop_();_nop_();_nop_();_nop_();_nop_();_nop_();_nop_();
+	PX1 = 1;
+	PADC = 1;
+	P1ASF = 0x1F;
+	ADC_CONTR = ADC_POWER|ADC_HHSPEED|ch;
+	_nop_();_nop_();_nop_();_nop_();_nop_();_nop_();_nop_();_nop_();_nop_();_nop_();_nop_();
 	TR0 = 0; //reset Timer0 Switch
 	TMOD = 0x11; //0010 0010
 	TL0 = (FULL - ALL_WIDTH - servoMotorHighTime) %256;
@@ -55,20 +54,26 @@ void setup(){
 	SERVOMOTOR1 = 0;
 	TR0 = 1;
 }
-/*void AnalogISR(void) interrupt 5 using 1{
+void AnalogISR(void) interrupt 5 using 2{
 	ADC_CONTR &= ~ADC_FLAG;
 	if(ADC_RES >= 0xE0) cny70 |= (0x01 << ch);
 	if(ADC_RES <= 0x0f) cny70 &= _crol_(0xfe,ch);
 	if(++ch>7){
 		ch = 0;
+		if((~cny70)&0x08 == 0x08) servoMotorHighTime =1400;
+		if((~cny70)&0x04 == 0x04) servoMotorHighTime =1251;
+		if((~cny70)&0x02 == 0x02) servoMotorHighTime =1100;
+		SBUF = cny70;
+		while(!TI);
+		TI = 0;
 	}
-	ADC_CONTR = ADC_POWER|ADC_HHSPEED|ADC_START|ch;
-}*/
+	else ADC_CONTR = ADC_POWER|ADC_HHSPEED|ADC_START|ch;
+}
 void limitSwitch () interrupt 0 using 0{
 	IN1 =1;
 	IN2 =1;
 }
-void servoMotor ()interrupt 1 using 0{
+void servoMotor ()interrupt 1 using 2{
 	TR0 = 0;
 	if(SERVOMOTOR1 == 1){
 		TL0 = (FULL - ALL_WIDTH - servoMotorHighTime) %256;
@@ -82,29 +87,15 @@ void servoMotor ()interrupt 1 using 0{
 	}
 	TR0 = 1;
 }
-void serialInit(void)		//9600bps@12.000MHz
-{
-	PCON &= 0x7F;		//Baudrate no doubled
-	SCON = 0x50;		//8bit and variable baudrate
-	AUXR |= 0x04;		//BRT's clock is Fosc (1T)
-	BRT = 0xD9;		//Set BRT's reload value
-	AUXR |= 0x01;		//Use BRT as baudrate generator
-	AUXR |= 0x10;		//BRT running
-}
-void serialSendHex(unsigned char Data){
-	SBUF = Data;
-	while(!TI);
-	TI = 0;
-}
 void Delay500ms()		//@11.0592MHz
 {
 	unsigned char i, j, k;
 
 	_nop_();
 	_nop_();
-	i = 22;
-	j = 3;
-	k = 227;
+	i = 5;
+	j = 144;
+	k = 71;
 	do
 	{
 		do
@@ -112,4 +103,12 @@ void Delay500ms()		//@11.0592MHz
 			while (--k);
 		} while (--j);
 	} while (--i);
+}
+void UartInit(void)		//9600bps@12.000MHz
+{
+	AUXR &= 0xF7;		//Baudrate no doubled
+	S2CON = 0x50;		//8bit and variable baudrate
+	AUXR |= 0x04;		//BRT's clock is Fosc (1T)
+	BRT = 0xD9;		//Set BRT's reload value
+	AUXR |= 0x10;		//BRT running
 }

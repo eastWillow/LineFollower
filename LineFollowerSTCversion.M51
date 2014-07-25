@@ -1,4 +1,4 @@
-BL51 BANKED LINKER/LOCATER V6.22                                                        07/25/2014  17:09:51  PAGE 1
+BL51 BANKED LINKER/LOCATER V6.22                                                        07/25/2014  17:56:05  PAGE 1
 
 
 BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
@@ -25,25 +25,29 @@ LINK MAP OF MODULE:  LineFollowerSTCversion (LINEFOLLOWERSTCVERSION)
             * * * * * * *   D A T A   M E M O R Y   * * * * * * *
             REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
             DATA    0008H     0004H     UNIT         ?DT?LINEFOLLOWERSTCVERSION
-            IDATA   000CH     0001H     UNIT         ?STACK
+                    000CH     0004H                  *** GAP ***
+            REG     0010H     0008H     ABSOLUTE     "REG BANK 2"
+            IDATA   0018H     0001H     UNIT         ?STACK
 
             * * * * * * *   C O D E   M E M O R Y   * * * * * * *
             CODE    0000H     0003H     ABSOLUTE     
             CODE    0003H     0003H     ABSOLUTE     
                     0006H     0005H                  *** GAP ***
             CODE    000BH     0003H     ABSOLUTE     
-                    000EH     07F2H                  *** GAP ***
+                    000EH     001DH                  *** GAP ***
+            CODE    002BH     0003H     ABSOLUTE     
+                    002EH     07D2H                  *** GAP ***
             CODE    0800H     00CEH     UNIT         ?C?LIB_CODE
             CODE    08CEH     00BAH     UNIT         ?PR?SERVOMOTOR?LINEFOLLOWERSTCVERSION
             CODE    0988H     008CH     UNIT         ?C_C51STARTUP
-            CODE    0A14H     0057H     UNIT         ?PR?SETUP?LINEFOLLOWERSTCVERSION
-            CODE    0A6BH     0044H     UNIT         ?C?LDIV
-            CODE    0AAFH     0013H     UNIT         ?PR?SERIALINIT?LINEFOLLOWERSTCVERSION
-            CODE    0AC2H     000FH     UNIT         ?PR?DELAY500MS?LINEFOLLOWERSTCVERSION
-            CODE    0AD1H     000BH     UNIT         ?C_INITSEG
-            CODE    0ADCH     0008H     UNIT         ?PR?_SERIALSENDHEX?LINEFOLLOWERSTCVERSION
-            CODE    0AE4H     0005H     UNIT         ?PR?MAIN?LINEFOLLOWERSTCVERSION
-            CODE    0AE9H     0005H     UNIT         ?PR?LIMITSWITCH?LINEFOLLOWERSTCVERSION
+            CODE    0A14H     007CH     UNIT         ?PR?ANALOGISR?LINEFOLLOWERSTCVERSION
+            CODE    0A90H     006FH     UNIT         ?PR?SETUP?LINEFOLLOWERSTCVERSION
+            CODE    0AFFH     0044H     UNIT         ?C?LDIV
+            CODE    0B43H     0010H     UNIT         ?PR?UARTINIT?LINEFOLLOWERSTCVERSION
+            CODE    0B53H     000FH     UNIT         ?PR?DELAY500MS?LINEFOLLOWERSTCVERSION
+            CODE    0B62H     000EH     UNIT         ?PR?MAIN?LINEFOLLOWERSTCVERSION
+            CODE    0B70H     000BH     UNIT         ?C_INITSEG
+            CODE    0B7BH     0005H     UNIT         ?PR?LIMITSWITCH?LINEFOLLOWERSTCVERSION
 
 
 
@@ -55,13 +59,14 @@ SEGMENT
 ---------------------
 ?C_C51STARTUP
   +--> ?PR?MAIN?LINEFOLLOWERSTCVERSION
+BL51 BANKED LINKER/LOCATER V6.22                                                      07/25/2014  17:56:05  PAGE 2
+
+
   +--> ?C_INITSEG
 
 ?PR?MAIN?LINEFOLLOWERSTCVERSION
   +--> ?PR?SETUP?LINEFOLLOWERSTCVERSION
-BL51 BANKED LINKER/LOCATER V6.22                                                      07/25/2014  17:09:51  PAGE 2
-
-
+  +--> ?PR?UARTINIT?LINEFOLLOWERSTCVERSION
 
 
 
@@ -76,21 +81,23 @@ SYMBOL TABLE OF MODULE:  LineFollowerSTCversion (LINEFOLLOWERSTCVERSION)
   D:00A0H         PUBLIC        P2
   D:00B0H         PUBLIC        P3
   D:00A8H         PUBLIC        IE
-  C:0AE9H         PUBLIC        limitSwitch
+  D:00BDH         PUBLIC        ADC_RES
+  C:0B7BH         PUBLIC        limitSwitch
+  B:00B8H.5       PUBLIC        PADC
   D:00B8H         PUBLIC        IP
-  C:0AAFH         PUBLIC        serialInit
   B:0098H.1       PUBLIC        TI
   D:00D8H         PUBLIC        CCON
-  C:0AE4H         PUBLIC        main
+  C:0B62H         PUBLIC        main
+  D:00BCH         PUBLIC        ADC_CONTR
   D:0099H         PUBLIC        SBUF
-  D:0087H         PUBLIC        PCON
   D:0008H         PUBLIC        cny70
-  C:0A14H         PUBLIC        setup
+  C:0A90H         PUBLIC        setup
   D:0098H         PUBLIC        SCON
+  C:0B43H         PUBLIC        UartInit
   D:0089H         PUBLIC        TMOD
   D:0088H         PUBLIC        TCON
-  C:0ADCH         PUBLIC        _serialSendHex
   D:008EH         PUBLIC        AUXR
+  C:0A14H         PUBLIC        AnalogISR
   C:08CEH         PUBLIC        servoMotor
   B:00A0H.0       PUBLIC        IN1
   B:00A0H.1       PUBLIC        IN2
@@ -99,98 +106,116 @@ SYMBOL TABLE OF MODULE:  LineFollowerSTCversion (LINEFOLLOWERSTCVERSION)
   D:008AH         PUBLIC        TL0
   B:00A0H.2       PUBLIC        SERVOMOTOR1
   B:0088H.4       PUBLIC        TR0
+  B:00B8H.2       PUBLIC        PX1
   D:000AH         PUBLIC        servoMotorHighTime
+  D:009DH         PUBLIC        P1ASF
+  D:009AH         PUBLIC        S2CON
   D:009CH         PUBLIC        BRT
-  C:0AC2H         PUBLIC        Delay500ms
+  C:0B53H         PUBLIC        Delay500ms
   D:00D0H         PUBLIC        PSW
   -------         PROC          MAIN
-  C:0AE4H         LINE#         37
-  C:0AE4H         LINE#         38
-  C:0AE7H         LINE#         40
-  C:0AE7H         LINE#         43
+  C:0B62H         LINE#         36
+  C:0B62H         LINE#         37
+  C:0B65H         LINE#         38
+  C:0B68H         LINE#         39
+  C:0B68H         LINE#         40
+BL51 BANKED LINKER/LOCATER V6.22                                                      07/25/2014  17:56:05  PAGE 3
+
+
+  C:0B6EH         LINE#         41
   -------         ENDPROC       MAIN
   -------         PROC          SETUP
-  C:0A14H         LINE#         45
-  C:0A14H         LINE#         46
-  C:0A17H         LINE#         51
-  C:0A19H         LINE#         52
-  C:0A1CH         LINE#         53
-  C:0A42H         LINE#         54
-  C:0A66H         LINE#         55
-  C:0A68H         LINE#         56
-  C:0A6AH         LINE#         57
-BL51 BANKED LINKER/LOCATER V6.22                                                      07/25/2014  17:09:51  PAGE 3
-
-
+  C:0A90H         LINE#         43
+  C:0A90H         LINE#         44
+  C:0A93H         LINE#         45
+  C:0A95H         LINE#         46
+  C:0A97H         LINE#         47
+  C:0A9AH         LINE#         48
+  C:0AA0H         LINE#         49
+  C:0AABH         LINE#         50
+  C:0AADH         LINE#         51
+  C:0AB0H         LINE#         52
+  C:0AD6H         LINE#         53
+  C:0AFAH         LINE#         54
+  C:0AFCH         LINE#         55
+  C:0AFEH         LINE#         56
   -------         ENDPROC       SETUP
+  -------         PROC          ANALOGISR
+  C:0A14H         LINE#         57
+  C:0A1BH         LINE#         58
+  C:0A1EH         LINE#         59
+  C:0A34H         LINE#         60
+  C:0A4AH         LINE#         61
+  C:0A54H         LINE#         62
+  C:0A57H         LINE#         63
+  C:0A63H         LINE#         64
+  C:0A6FH         LINE#         65
+  C:0A7BH         LINE#         66
+  C:0A7EH         LINE#         67
+  C:0A81H         LINE#         68
+  C:0A83H         LINE#         69
+  C:0A85H         LINE#         70
+  C:0A8BH         LINE#         71
+  -------         ENDPROC       ANALOGISR
   -------         PROC          LIMITSWITCH
-  C:0AE9H         LINE#         67
-  C:0AE9H         LINE#         68
-  C:0AEBH         LINE#         69
-  C:0AEDH         LINE#         70
+  C:0B7BH         LINE#         72
+  C:0B7BH         LINE#         73
+  C:0B7DH         LINE#         74
+  C:0B7FH         LINE#         75
   -------         ENDPROC       LIMITSWITCH
   -------         PROC          SERVOMOTOR
-  C:08CEH         LINE#         71
-  C:08DBH         LINE#         72
-  C:08DDH         LINE#         73
-  C:08E0H         LINE#         74
-  C:0906H         LINE#         75
-  C:092AH         LINE#         76
-  C:092CH         LINE#         77
-  C:092CH         LINE#         78
-  C:092FH         LINE#         79
-  C:0955H         LINE#         80
-  C:0979H         LINE#         81
-  C:097BH         LINE#         82
-  C:097BH         LINE#         83
-  C:097DH         LINE#         84
+  C:08CEH         LINE#         76
+  C:08DBH         LINE#         77
+  C:08DDH         LINE#         78
+  C:08E0H         LINE#         79
+  C:0906H         LINE#         80
+  C:092AH         LINE#         81
+  C:092CH         LINE#         82
+  C:092CH         LINE#         83
+  C:092FH         LINE#         84
+  C:0955H         LINE#         85
+  C:0979H         LINE#         86
+  C:097BH         LINE#         87
+  C:097BH         LINE#         88
+  C:097DH         LINE#         89
   -------         ENDPROC       SERVOMOTOR
-  -------         PROC          SERIALINIT
-  C:0AAFH         LINE#         85
-  C:0AAFH         LINE#         86
-  C:0AAFH         LINE#         87
-  C:0AB2H         LINE#         88
-  C:0AB5H         LINE#         89
-  C:0AB8H         LINE#         90
-  C:0ABBH         LINE#         91
-  C:0ABEH         LINE#         92
-  C:0AC1H         LINE#         93
-  -------         ENDPROC       SERIALINIT
-  -------         PROC          _SERIALSENDHEX
-  D:0007H         SYMBOL        Data
-  C:0ADCH         LINE#         94
-  C:0ADCH         LINE#         95
-  C:0ADEH         LINE#         96
-  C:0AE1H         LINE#         97
-  C:0AE3H         LINE#         98
-  -------         ENDPROC       _SERIALSENDHEX
+BL51 BANKED LINKER/LOCATER V6.22                                                      07/25/2014  17:56:05  PAGE 4
+
+
   -------         PROC          DELAY500MS
   -------         DO            
   D:0007H         SYMBOL        i
   D:0006H         SYMBOL        j
   D:0005H         SYMBOL        k
   -------         ENDDO         
-  C:0AC2H         LINE#         99
-  C:0AC2H         LINE#         100
-  C:0AC2H         LINE#         103
-  C:0AC3H         LINE#         104
-  C:0AC4H         LINE#         105
-  C:0AC6H         LINE#         106
-  C:0AC8H         LINE#         107
-  C:0ACAH         LINE#         109
-  C:0ACAH         LINE#         111
-BL51 BANKED LINKER/LOCATER V6.22                                                      07/25/2014  17:09:51  PAGE 4
-
-
-  C:0ACAH         LINE#         112
-  C:0ACCH         LINE#         113
-  C:0ACEH         LINE#         114
-  C:0AD0H         LINE#         115
+  C:0B53H         LINE#         90
+  C:0B53H         LINE#         91
+  C:0B53H         LINE#         94
+  C:0B54H         LINE#         95
+  C:0B55H         LINE#         96
+  C:0B57H         LINE#         97
+  C:0B59H         LINE#         98
+  C:0B5BH         LINE#         100
+  C:0B5BH         LINE#         102
+  C:0B5BH         LINE#         103
+  C:0B5DH         LINE#         104
+  C:0B5FH         LINE#         105
+  C:0B61H         LINE#         106
   -------         ENDPROC       DELAY500MS
+  -------         PROC          UARTINIT
+  C:0B43H         LINE#         107
+  C:0B43H         LINE#         108
+  C:0B43H         LINE#         109
+  C:0B46H         LINE#         110
+  C:0B49H         LINE#         111
+  C:0B4CH         LINE#         112
+  C:0B4FH         LINE#         113
+  C:0B52H         LINE#         114
+  -------         ENDPROC       UARTINIT
   -------         ENDMOD        LINEFOLLOWERSTCVERSION
 
   -------         MODULE        ?C?SLDIV
-  C:0A6BH         PUBLIC        ?C?SLDIV
+  C:0AFFH         PUBLIC        ?C?SLDIV
   -------         ENDMOD        ?C?SLDIV
 
   -------         MODULE        ?C?ULDIV
@@ -198,17 +223,11 @@ SYMBOL TABLE OF MODULE:  LineFollowerSTCversion (LINEFOLLOWERSTCVERSION)
   -------         ENDMOD        ?C?ULDIV
 
 *** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?SERIALINIT?LINEFOLLOWERSTCVERSION
-
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?_SERIALSENDHEX?LINEFOLLOWERSTCVERSION
-
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
     SEGMENT: ?PR?DELAY500MS?LINEFOLLOWERSTCVERSION
 
 ******************************************************************************
-* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 0155H BYTE (16%) *
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 01EAH BYTE (23%) *
 ******************************************************************************
 
-Program Size: data=13.0 xdata=0 code=759
-LINK/LOCATE RUN COMPLETE.  3 WARNING(S),  0 ERROR(S)
+Program Size: data=21.0 xdata=0 code=908
+LINK/LOCATE RUN COMPLETE.  1 WARNING(S),  0 ERROR(S)
